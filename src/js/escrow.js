@@ -45,7 +45,7 @@ EscrowApp = {
 
       EscrowApp.escrowInstance.checkBalance.call(account).then(function(result) {
         console.log(result.toNumber());
-      })
+      });
     })
   },
 
