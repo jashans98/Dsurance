@@ -16,7 +16,7 @@ contract Escrow {
     return true;
   }
 
-  function withdraw(uint amount) public returns (bool) {
+  function withdraw(uint amount) returns (bool) {
     require(balances[msg.sender] >= amount);
     if (msg.sender.send(amount)) {
       LogWithdrawal(msg.sender, amount);
@@ -28,7 +28,7 @@ contract Escrow {
     }
   }
 
-  function checkBalance() public returns (uint) {
-    return balances[msg.sender];
+  function checkBalance(address sender) constant returns (uint) {
+    return balances[sender];
   }
 }
