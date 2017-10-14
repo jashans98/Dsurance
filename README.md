@@ -1,2 +1,0 @@
-# Dsurance
-Decentralized Insurance Platform
