@@ -4,19 +4,19 @@ The aim of Dsurance is to replace centralized insurance institutions with a smar
 
 Current features:
 
-+Smart contract allows creation of arbitrary insurance networks that manage funds between policyholders and investors.
-+Policyholder claim workflow and claim authorization process for investors to permit claim payouts.
-+Mechanism to incentivize investors to authorize valid claims and reject fake claims.
+* Smart contract allows creation of arbitrary insurance networks that manage funds between policyholders and investors.
+* Policyholder claim workflow and claim authorization process for investors to permit claim payouts.
+* Mechanism to incentivize investors to authorize valid claims and reject fake claims.
 
 Lots can be done to keep building on Dsurance. Most notably:
 
-+Enhanced consensus algorithm between investors to establish validity of policyholder claims.
-+Risk Segmentation algorithm allowing for policyholders to be charged as a function of their risk characteristics.
-+Architecture to automatically create a smart contract for each new insurance network.
-+Investment platform for the Pool Value to appreciate.
-+Many security enhancements.
+* Enhanced consensus algorithm between investors to establish validity of policyholder *laims.
+* Risk Segmentation algorithm allowing for policyholders to be charged as a function of their risk characteristics.
+* Architecture to automatically create a smart contract for each new insurance network.
+* Investment platform for the Pool Value to appreciate.
+* Many security enhancements.
 
-#How it Works
+# How it Works
 
 We're using Truffle's pet shop demo as our starter code and iterating from there.
 To deploy:
