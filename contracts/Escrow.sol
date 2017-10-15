@@ -99,7 +99,7 @@ contract Escrow {
   }
 
   function withdraw(uint groupIndex, uint amount) {
-    verify the user
+    // verify the user
     require(groups[groupIndex].registeredUsers[msg.sender]);
     require(groups[groupIndex].paidUsers[msg.sender]);
     require(amount < groups[groupIndex].groupBalance);
