@@ -1,7 +1,5 @@
 # Dsurance
 
-Insurance concepts originate from early civilization, when farmers would group together to protect one another against famine, which could occur upon a poor harvest. At this time, if ever a family of farmers were to have a bad harvest, each of the farmers in the 'insurance network' would contribute a portion of the required relief to the farmers in need. With time, as the complexity of these networks have grown, centralized insurance institutions were born and have grown into those we know today.
-
 The aim of Dsurance is to replace centralized insurance institutions with a smart contract on the blockchain, which would automatically pool premiums and guarantee payout of claims upon insured losses. This would remove the overhead cost of reserving, render the insurance process completely transparent, and allow virtually any type of insurance to be available to anybody across the globe. The smart contract would become the insurer.
 
 Current features:
