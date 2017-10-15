@@ -1,0 +1,39 @@
+---
+name: investor
+url: /investor
+---
+
+<div ng-controller = "MainController as c" class="grid-container">
+	<br></br>	
+	<div class="card">
+		<div class="card-divider">
+			<span style="font-size:20px"><center><strong>Become an investor:</strong></center></span>	
+		</div>
+		<div class="card-section">
+			<form>
+				<label>
+					Network Index
+					<input type="text" ng-model="c.network_index" placeholder="Claim Title">
+				</label
+				<label>
+					Claim Title
+					<input type="text" ng-model="c.claim_title" placeholder="Claim Title">
+				</label>
+				<label>
+					At fault? (Yes/No)
+					<input type="text" ng-model="c.at_fault"placeholder="Yes or No">
+				</label>
+				<label>
+					Relief Amount (ETH)
+					<input type="text" ng-model="c.relief_amount" placeholder="ETH Amount">
+				</label>
+				<label>
+					Loss Type
+					<input type="text"  ng-model="c.loss_type" placeholder="Loss Type">
+				</label>
+			</form>
+			<br></br>
+			<a class="button" ng-click="c.submit_claim()">Submit Claim!</a>
+		</div>
+	</div>
+</div>
