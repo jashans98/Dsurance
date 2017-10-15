@@ -24,31 +24,13 @@ function sendFileToIPFS(data){
 			console.log('hash', hash);
 			//window.LeakApp.handleSubmit(hash); 
 			toReturn = hash;
+			return toReturn;
 })}
 
 //EXAMPLE:
 //sendFileToIPFS(new Buffer("helloWorld")); //Returns a hash
 
 return toReturn;
-
-
-function getFileFromIPFS(hash) {
-
-  return ipfs.files.get(hash);
-}
-
-
-var retrieveFileToIPFS = (hash, callback) => {
-	getFileFromIPFS(hash)
-		.then((stream) => {
-			stream.on('data', (file) => {
-				const data = file.content.read().toString()
-				// console.log(encrypted_data);
-				console.log(data);
-
-				//fileDownload(uncrypted, 'download.txt');
-		});
-})}
 
 module.exports =	{
 	addFileToIPFS,
