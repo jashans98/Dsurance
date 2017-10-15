@@ -4,10 +4,10 @@ url: /listings
 ---
 
 <div ng-controller = "MainController as c" class="grid-container">
-<br></br>	
+<br></br>
 <div class="card">
 <div class="card-divider">
-<span style="font-size:20px"><center><strong>Insurance listings:</strong></center></span>	
+<span style="font-size:20px"><center><strong>Insurance listings:</strong></center></span>
 </div>
 <div class="card-section">
 <zf-accordion>
@@ -23,32 +23,6 @@ url: /listings
 </zf-accordion-item>
 </div>
 </zf-accordian>
-<br></br>
-<bl></bl>
-<div class="grid-block">
-<form>
-<label>
-Claim Title
-<input type="text" ng-model="c.claim_title" placeholder="aClaim Title">
-</label>
-<div class="small-12 medium-6 grid-content">
-<label>
-At fault? (Yes/No)
-<input type="text" ng-model="c.at_fault"placeholder="Yes or No">
-</label>
-<label>
-Relief Amount (ETH)
-<input type="text" ng-model="c.relief_amount" placeholder="ETH Amount">
-</label>
-<div class="small-12 medium-6 grid-content">
-<label>
-Loss Type
-<input type="text"  ng-model="c.loss_type" placeholder="Loss Type">
-</label>
-</div>>
-</form>
-<br></br>
-<br></br>
 <br></br>
 <center><a class="button" ng-click="c.addNetwork()">Add Network</a><center>
 </div>

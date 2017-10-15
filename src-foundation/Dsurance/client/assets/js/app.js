@@ -16,6 +16,11 @@
 		 this.at_fault = "";
 		 this.relief_amount = "";
 		 this.loss_type = "";
+		 this.network_index = "";
+		 this.submit_claim = function(){
+			var claim = this.network_index+ "," +this.claim_title + "," + this.at_fault + "," +  this.relief_amount + "," + this.loss_type;
+			console.log("SUBMITTING "+claim);
+		}
 		 this.addNetwork = function(){
 		 this.networks = this.networks.concat([{name:counter.toString(),content:"0 participants"}])
 		 console.log("ADDED NETWORK "+counter.toString());
