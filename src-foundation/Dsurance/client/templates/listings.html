@@ -4,27 +4,36 @@ url: /listings
 ---
 
 <div ng-controller = "MainController as c" class="grid-container">
-<br></br>
-<div class="card">
-<div class="card-divider">
-<span style="font-size:20px"><center><strong>Insurance listings:</strong></center></span>
-</div>
-<div class="card-section">
-<zf-accordion>
-<div ng-repeat = "network in c.networks">
-<zf-accordion-item title="Dsurance Network #00{{network.name}}">
-{{network.content}}
-<a zf-open="basicModal" class="button">Check network stats</a>
-<div zf-modal="" id="basicModal">
-<a zf-close="" class="close-button"></a>
-<h3>Network Statistics</h3>
-<p>This network is nice!</p>
-</div>
-</zf-accordion-item>
-</div>
-</zf-accordian>
-<br></br>
-<center><a class="button" ng-click="c.addNetwork()">Add Network</a><center>
-</div>
-</div>
+	<br></br>
+	<div class="card">
+		<div class="card-divider">
+			<span style="font-size:20px"><center><strong>Insurance listings:</strong></center></span>
+		</div>
+		<div class="card-section">
+			<center><a class="button" ng-click="c.render()">Refresh Networks</a><center>
+					<zf-accordion>
+						<div ng-repeat = "network in c.networks">
+							<zf-accordion-item title="Dsurance Network #00{{network.name}}">
+								{{network.content}}
+								<a zf-open="basicModal" class="button">Check network stats</a>
+								<a class="button" ng-click="c.join_net(network.name)">{{c.in_or_out}}</a>
+								<div zf-modal="" id="basicModal">
+									<a zf-close="" class="close-button"></a>
+									<section class="block-list">
+										<header>Network {{network.name}} Statistics</header>
+										<ul>
+											<li>Number of Participants:<br/>{{c.getP(network.name)}}</li>
+											<li>Pool Value:<br/> </li>
+											<li>Premium:<br/> </li>
+											<li>Deposit:<br/> </li>
+										</ul>
+									</section>
+								</div>
+							</zf-accordion-item>
+						</div>
+					</zf-accordian>
+					<br></br>
+					<center><a class="button" ng-click="c.addNetwork()">Add Network</a><center>
+		</div>
+	</div>
 </div>
