@@ -1,7 +1,27 @@
 # Dsurance
 
+Insurance concepts originate from early civilization, when farmers would group together to protect one another against famine, which could occur upon a poor harvest. At this time, if ever a family of farmers were to have a bad harvest, each of the farmers in the 'insurance network' would contribute a portion of the required relief to the farmers in need. With time, as the complexity of these networks have grown, centralized insurance institutions were born and have grown into those we know today.
+
+The aim of Dsurance is to replace centralized insurance institutions with a smart contract on the blockchain, which would automatically pool premiums and guarantee payout of claims upon insured losses. This would remove the overhead cost of reserving, render the insurance process completely transparent, and allow virtually any type of insurance to be available to anybody across the globe. The smart contract would become the insurer.
+
+Current features:
+
++Smart contract allows creation of arbitrary insurance networks that manage funds between policyholders and investors.
++Policyholder claim workflow and claim authorization process for investors to permit claim payouts.
++Mechanism to incentivize investors to authorize valid claims and reject fake claims.
+
+Lots can be done to keep building on Dsurance. Most notably:
+
++Enhanced consensus algorithm between investors to establish validity of policyholder claims.
++Risk Segmentation algorithm allowing for policyholders to be charged as a function of their risk characteristics.
++Architecture to automatically create a smart contract for each new insurance network.
++Investment platform for the Pool Value to appreciate.
++Many security enhancements.
+
+#How it Works
+
 We're using Truffle's pet shop demo as our starter code and iterating from there.
-To depoloy:
+To deploy:
 
 ```
 testrpc
