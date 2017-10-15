@@ -1,0 +1,30 @@
+---
+name: listings
+url: /listings
+---
+
+<div ng-controller = "MainController as c" class="grid-container">
+<br></br>
+<div class="card">
+<div class="card-divider">
+<span style="font-size:20px"><center><strong>Insurance listings:</strong></center></span>
+</div>
+<div class="card-section">
+<zf-accordion>
+<div ng-repeat = "network in c.networks">
+<zf-accordion-item title="Dsurance Network #00{{network.name}}">
+{{network.content}}
+<a zf-open="basicModal" class="button">Check network stats</a>
+<div zf-modal="" id="basicModal">
+<a zf-close="" class="close-button"></a>
+<h3>Network Statistics</h3>
+<p>This network is nice!</p>
+</div>
+</zf-accordion-item>
+</div>
+</zf-accordian>
+<br></br>
+<center><a class="button" ng-click="c.addNetwork()">Add Network</a><center>
+</div>
+</div>
+</div>
