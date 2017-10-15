@@ -4,9 +4,10 @@ contract Escrow {
 
   struct Claim {
     address sender;
+    uint amount;
     string textHash;
-    string pictureHash;
-    uint approved;
+    string fileHash;
+    uint numApprovals;
   }
 
   struct InsuranceGroup {
@@ -22,8 +23,11 @@ contract Escrow {
 
 
   InsuranceGroup[] groups;
+  
+  mapping (address => uint) investorBalances;
   address[] investors;
-  Claim[] claims;
+  
+  mapping (uint => Claim[]) claims;
 
   // fire events for front-end whenever something is done
   event LogRegistration(uint groupIndex, address sender);
@@ -32,7 +36,14 @@ contract Escrow {
   event LogWithdrawal(uint groupIndex, address receiver, uint amount);
   event LogCreation(uint groupIndex);
   event LogUpdate(uint groupIndex);
-  event LogAcceptClaim(address investor, uint claimIndex);
+
+
+  event LogSubmitClaim(address user, uint groupIndex, string textHash, string fileHash);
+
+  event LogRegisterInvestor(address investor, uint amount);
+  event LogWithdrawInvestor(address investor, uint amount);
+  event LogInvestorAddBalance(address investor, uint amount);
+  event LogApprovedClaim(address investor, uint claimGroup, uint claimIndex);
 
 
   function registerForGroup(uint groupIndex) payable {
@@ -171,44 +182,101 @@ contract Escrow {
   }
 
 
+  // MARK: INVESTORS
+  function registerAsInvestor() payable {
+    require(msg.value >= 10 ether);
+    investorBalances[msg.sender] = msg.value;
+    investors.push(msg.sender);
 
-  // MARK: CLAIMS
-
-  function submitClaim(string _textHash, string _pictureHash) {
-
-    Claim memory c;
-    c.sender = msg.sender;
-    c.textHash = _textHash;
-    c.pictureHash = _pictureHash;
-    c.approved = 0;
-
-    claims.push(c);
+    LogRegisterInvestor(msg.sender, msg.value);
   }
 
-  function numClaims() constant returns (uint) {
-    return claims.length;
-  }
-
-  function fetchClaim(uint _claimId) constant returns (address, string, string, uint) {
-    Claim memory c = claims[_claimId];
-
-    return (c.sender, c.textHash, c.pictureHash, c.approved);
-  }
-
-  function acceptClaim(uint claimIndex) {
-    bool fromSender = false;
-    for (uint i = 0; i < investors.length; ++i) {
+  function addBalanceAsInvestor() payable {
+    // first check that the person calling the code is an investor
+    bool isInvestor = false;
+    for (uint i = 0; i < investors.length; i++) {
       if (investors[i] == msg.sender) {
-        fromSender = true;
+        isInvestor = true;
+      }
+    }
+    require(isInvestor);
+
+    investorBalances[msg.sender] += msg.value;
+
+    LogInvestorAddBalance(msg.sender, msg.value);
+  }
+
+  function withdrawAsInvestor(uint _amount) {
+    require(_amount <= investorBalances[msg.sender]);
+
+    msg.sender.transfer(_amount);
+    LogWithdrawInvestor(msg.sender, _amount);
+  }
+
+  function getInvestorBalance() constant returns (uint) {
+    return investorBalances[msg.sender];
+  }
+
+  function approveClaim(uint _groupIndex, uint _claimId) {
+    // only investors with a certain stake in the network can approve claims; i.e. more than 10 ether
+
+    // first check that the person calling the code is an investor
+    bool isInvestor = false;
+    for (uint i = 0; i < investors.length; i++) {
+      if (investors[i] == msg.sender) {
+        isInvestor = true;
       }
     }
 
-    require(fromSender);
+    if (!isInvestor) revert();
 
-    claims[claimIndex].approved += 1;
+    // now check the investor's stake
+    require(investorBalances[msg.sender] >= 10 ether);
 
-    LogAcceptClaim(msg.sender, claimIndex);
+    // everything passes; approve the claim
+    claims[_groupIndex][_claimId].numApprovals += 1;
+
+    LogApprovedClaim(msg.sender, _groupIndex, _claimId);
+
+
+    if (claims[_groupIndex][_claimId].numApprovals == 1) {
+      // first approval: transfer balance
+      claims[_groupIndex][_claimId].sender.transfer(claims[_groupIndex][_claimId].amount);
+    }
+
   }
+
+
+
+
+
+  // MARK: CLAIMS
+  function submitClaim(uint _groupIndex, uint _requestedAmount, string _textHash, string _fileHash) {
+    // TODO: check that the msg.sender is in fact a paying user in the group
+
+    
+    Claim memory c;
+    c.sender = msg.sender;
+    c.amount = _requestedAmount;
+    c.textHash = _textHash;
+    c.fileHash = _fileHash;
+
+    claims[_groupIndex].push(c);
+
+    LogSubmitClaim(msg.sender, _groupIndex, _textHash, _fileHash);
+  }
+
+
+  function numClaimsInGroup(uint _groupIndex) constant returns (uint) {
+    return claims[_groupIndex].length;
+  }
+
+  function fetchClaimFromGroupByIndex(uint _groupIndex, uint _claimIndex) constant returns (address, uint, string, string) {
+    Claim memory c = claims[_groupIndex][_claimIndex];
+    return (c.sender, c.amount, c.textHash, c.fileHash);
+  }
+
+  
 
 
 

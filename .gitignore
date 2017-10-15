@@ -1,6 +1,8 @@
 # Truffle Builds
 build
 
+moveabi.sh
+
 # Logs
 logs
 *.log

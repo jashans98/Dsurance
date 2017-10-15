@@ -1,6 +1,5 @@
 //IPFS IMPORT
 var ipfsAPI = require('ipfs-api');
-var fileDownload = require('react-file-download');
 
 //CREATE INSTANCE
 var ipfs = ipfsAPI(
@@ -15,17 +14,13 @@ function getFileFromIPFS(hash) {
   return ipfs.files.get(hash);
 }
 
-var retrieveFileToIPFS = (hash, callback) => {
+var retrieveFileToIPFS = (hash) => {
 	getFileFromIPFS(hash)
 		.then((stream) => {
 			stream.on('data', (file) => {
 				const data = file.content.read().toString();
-				console.log(data);
-				fileDownload(uncrypted, 'download.txt');
+				return data;
 		});
 })}
 
-module.exports =	{
-	getFileFromIPFS,
-	retrieveFileToIPFS,
-}
+module.exports = function(hash)	{ return retrieveFileToIPFS(hash) }
