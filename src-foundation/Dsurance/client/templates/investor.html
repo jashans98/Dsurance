@@ -12,28 +12,20 @@ url: /investor
 		<div class="card-section">
 			<form>
 				<label>
-					Network Index
-					<input type="text" ng-model="c.network_index" placeholder="Claim Title">
-				</label
-				<label>
-					Claim Title
-					<input type="text" ng-model="c.claim_title" placeholder="Claim Title">
+					Full Name
+					<input type="text" ng-model="c.network_index" placeholder="Legal Name">
 				</label>
 				<label>
-					At fault? (Yes/No)
-					<input type="text" ng-model="c.at_fault"placeholder="Yes or No">
+					Occupation
+					<input type="text" ng-model="c.claim_title" placeholder="Title">
 				</label>
 				<label>
-					Relief Amount (ETH)
+					Investment Amount
 					<input type="text" ng-model="c.relief_amount" placeholder="ETH Amount">
-				</label>
-				<label>
-					Loss Type
-					<input type="text"  ng-model="c.loss_type" placeholder="Loss Type">
 				</label>
 			</form>
 			<br></br>
-			<a class="button" ng-click="c.submit_claim()">Submit Claim!</a>
+			<a class="button" ng-click="c.submit_inv_application()">Submit Application</a>
 		</div>
 	</div>
 </div>
