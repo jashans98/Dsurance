@@ -22,15 +22,13 @@ function sendFileToIPFS(data){
 		.then(res => {
 			const hash = res[0]['hash'];
 			console.log('hash', hash);
-			//window.LeakApp.handleSubmit(hash); 
+			window.EscrowApp.handleSubmit(hash); 
 			toReturn = hash;
 			return toReturn;
 })}
 
 //EXAMPLE:
 //sendFileToIPFS(new Buffer("helloWorld")); //Returns a hash
-
-return toReturn;
 
 module.exports =	{
 	addFileToIPFS,
