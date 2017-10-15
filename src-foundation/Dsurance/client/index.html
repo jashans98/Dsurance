@@ -5,11 +5,15 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Dsurance</title>
 		<link href="./assets/css/app.css" rel="stylesheet" type="text/css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 		<script src="./assets/js/foundation.js"></script>
 		<script src="./assets/js/templates.js"></script>
 		<script src="./assets/js/routes.js"></script>
 		<script src="./assets/js/app.js"></script>
-	</head>
+		<script src="./assets/js/web3.min.js"></script>
+		<script src="./assets/js/escrow.js"></script>
+		<script src="./assets/js/truffle-contract.js"></script>	
+		</head>
 	<body>
 		<div class="grid-frame vertical">
 			<div class="grid-content shrink" style="padding: 0;">
@@ -17,7 +21,8 @@
 					<li><a ui-sref="home" ><strong>Home</strong></a></li>
 					<li><a ui-sref="listings"><strong>Listings</strong></a></li>
 					<li><a ui-sref="submit"><strong>Submit A Claim</strong></a></li>
-					<li><a ui-sref="investor"><strong>Investor</strong></a></li>	
+					<li><a ui-sref="payment"><strong>Pay Your Bills</strong></a></li>
+					<li><a ui-sref="investor"><strong>Invest</strong></a></li>	
 				</ul>
 			</div>
 			<div ui-view class="grid-content">

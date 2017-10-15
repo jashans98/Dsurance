@@ -1,0 +1,26 @@
+---
+name: payment
+url: /payment
+---
+
+<div ng-controller = "MainController as c" class="grid-container">
+	<br></br>	
+	<div class="card">
+		<div class="card-divider">
+			<span style="font-size:20px"><center><strong>You have {{c.whathaveidone}}</strong></center></span>	
+		</div>
+		<div class="card-section">
+			<form>
+				<label>
+					Monthly premium: {{c.monthly}}
+				</label>
+				<label>
+					Payment Amount (ETH)
+					<input type="text" ng-model="c.payment_amount" placeholder="ETH Amount">
+				</label>
+			</form>
+			<br></br>
+			<a class="button" ng-click="c.submit_claim()">Pay!</a>
+		</div>
+	</div>
+</div>
