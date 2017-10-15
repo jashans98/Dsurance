@@ -52,8 +52,8 @@ EscrowApp = {
     });
   },
 
-  countGroups: function(callBackFn) {
-    EscrowApp.escrowInstance.insuranceGroupCount.call().then(g => callBackFn(g.toNumber()));
+  countGroups: function(callback) {
+    EscrowApp.escrowInstance.insuranceGroupCount.call().then(g => callback(g.toNumber()));
   },
 
   // force monthly updates so payments need to take place again
@@ -87,8 +87,8 @@ EscrowApp = {
 
 
   // pass a function that accepts the amount, and then does something with it
-  getMonthlyPaymentAmountForGroup: function(groupIndex, callBackFn) {
-    EscrowApp.escrowInstance.getMonthlyPremiumAmount.call(groupIndex).then(a => callBackFn(a.toNumber()));
+  getMonthlyPaymentAmountForGroup: function(groupIndex, callback) {
+    EscrowApp.escrowInstance.getMonthlyPremiumAmount.call(groupIndex).then(a => callback(a.toNumber()));
   },
 
   withdrawAmountFromInsuranceGroup: function(groupIndex, amount) {
@@ -99,29 +99,40 @@ EscrowApp = {
     });
   },
 
-  numUsersInGroup: function(groupIndex, callBackFn) {
-    EscrowApp.escrowInstance.numUsersInGroup.call(groupIndex).then(bigNum => callBackFn(bigNum.toNumber()));
+  numUsersInGroup: function(groupIndex, callback) {
+    EscrowApp.escrowInstance.numUsersInGroup.call(groupIndex).then(bigNum => callback(bigNum.toNumber()));
   },
 
 
-  userAddressInGroup: function(groupIndex, userIndex, callBackFn) {
-    EscrowApp.escrowInstance.userInGroup.call(groupIndex, userIndex).then(callBackFn);
+  userAddressInGroup: function(groupIndex, userIndex, callback) {
+    EscrowApp.escrowInstance.userInGroup.call(groupIndex, userIndex).then(callback);
   },
 
-  poolValueForGroup: function(groupIndex, callBackFn) {
-    EscrowApp.escrowInstance.totalBalanceForGroup.call(groupIndex).then(bigNum => callBackFn(bigNum.toNumber()));
+  poolValueForGroup: function(groupIndex, callback) {
+    EscrowApp.escrowInstance.totalBalanceForGroup.call(groupIndex).then(bigNum => callback(bigNum.toNumber()));
   },
 
-  numClaimsForGroup: function(groupIndex, callBackFn) {
-    EscrowApp.escrowInstance.numClaimsForGroup.call(groupIndex).then(bigNum => callBackFn(bigNum.toNumber()));
+  numClaimsForGroup: function(groupIndex, callback) {
+    EscrowApp.escrowInstance.numClaimsForGroup.call(groupIndex).then(bigNum => callback(bigNum.toNumber()));
   },
 
-  submitClaimToGroup: function(groupIndex, ipfsHash, callBackFn) {
-    EscrowApp.escrowInstance.submitClaimToGroup(groupIndex, ipfsHash, {from: EscrowApp.account});
+  submitClaimToGroup: function(groupIndex, textHash, pictureHash, callback) {
+    EscrowApp.escrowInstance.submitClaimToGroup(groupIndex, textHash, pictureHash, {from: EscrowApp.account});
+  },
+
+  // callback 
+  fetchClaimForGroup: function(groupIndex, claimIndex, callback) {
+    EscrowApp.escrowInstance.fetchClaimForGroup.call(groupIndex, claimIndex).then(function(claimArr) {
+      callback({
+        claimOrigin: claimArr[0],
+        textHash: claimArr[1],
+        pictureHash: claimArr[2]
+      });
+    });
   },
 
 
-  getAllInsuranceGroups: function(callBackFn) {
+  getAllInsuranceGroups: function(callback) {
     EscrowApp.countGroups(function (numGroups) {
       var insuranceGroups = [];
       for (var groupCounter = 0; groupCounter < numGroups; ++groupCounter) {
@@ -143,7 +154,7 @@ EscrowApp = {
         });
       }
 
-      callBackFn(insuranceGroups);
+      callback(insuranceGroups);
     });
   }
 
