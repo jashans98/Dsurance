@@ -12,14 +12,17 @@
 	 ]) .controller('MainController', function($scope, $log, $state, $http) {
 		 this.networks = [];
 		 var counter = 0;
+		 this.claim_title = "";
+		 this.at_fault = "";
+		 this.relief_amount = "";
+		 this.loss_type = "";
 		 this.addNetwork = function(){
 		 this.networks = this.networks.concat([{name:counter.toString(),content:"0 participants"}])
 		 console.log("ADDED NETWORK "+counter.toString());
 		 counter++;
-		 }
-
+		 };
 		 })
- .config(config)
+	 .config(config)
 	 .run(run)
 	 ;
 
