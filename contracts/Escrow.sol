@@ -4,7 +4,8 @@ contract Escrow {
 
   struct Claim {
     address sender;
-    string ipfsHash;
+    string textHash;
+    string pictureHash;
   }
 
   struct InsuranceGroup {
@@ -156,16 +157,22 @@ contract Escrow {
     return groups[groupIndex].users[userIndex];
   }
 
-  function submitClaimToGroup(uint groupIndex, string _ipfsHash) {
+  function submitClaimToGroup(uint groupIndex, string _textHash, string _pictureHash) {
     Claim memory c;
     c.sender = msg.sender;
-    c.ipfsHash = _ipfsHash;
+    c.textHash = _textHash;
+    c.pictureHash = _pictureHash;
 
-    groups[groupIndex].claims.push(claim);
+    groups[groupIndex].claims.push(c);
   }
 
   function numClaimsForGroup(uint groupIndex) constant returns (uint) {
     return groups[groupIndex].claims.length;
+  }
+
+  function fetchClaimForGroup(uint _groupIndex, uint _claimNumber) constant returns (address, string, string) {
+    Claim memory c = groups[_groupIndex].claims[_claimNumber];
+    return (c.sender, c.textHash, c.pictureHash);
   }
 
 
