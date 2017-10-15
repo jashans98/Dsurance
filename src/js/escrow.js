@@ -205,6 +205,11 @@ EscrowApp = {
       for (var i = 0; i < result.logs.length; i++)
         console.log(result.logs[i]);
     })
+  },
+
+  // callback here gets called with a bool
+  checkPaidUserForGroup: function(groupIndex, callback) {
+    EscrowApp.escrowInstance.checkPaidUserForGroup.call(groupIndex).then(callback);
   }
 
 

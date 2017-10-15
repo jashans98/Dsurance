@@ -161,6 +161,10 @@ contract Escrow {
     return groups.length;
   }
 
+  function checkPaidUserForGroup(uint _groupIndex) constant returns (bool) {
+    return groups[_groupIndex].paidUsers[msg.sender];
+  }
+
 
   function createInsuranceGroup() payable {
     require(msg.value >= 2 ether);
@@ -254,7 +258,7 @@ contract Escrow {
   function submitClaim(uint _groupIndex, uint _requestedAmount, string _textHash, string _fileHash) {
     // TODO: check that the msg.sender is in fact a paying user in the group
 
-    
+
     Claim memory c;
     c.sender = msg.sender;
     c.amount = _requestedAmount;
