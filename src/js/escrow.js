@@ -129,7 +129,7 @@ EscrowApp = {
         pictureHash: claimArr[2]
       });
     });
-  }
+  },
 
 
   getAllInsuranceGroups: function(callback) {
