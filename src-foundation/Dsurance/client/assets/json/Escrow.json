@@ -1,0 +1,1057 @@
+{
+  "contract_name": "Escrow",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "groupIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "getMonthlyPremiumAmount",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "groupIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "forceUpdate",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "groupIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "numUsersInGroup",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "groupIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "payPremium",
+      "outputs": [],
+      "payable": true,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "groupIndex",
+          "type": "uint256"
+        },
+        {
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "withdraw",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "groupIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "deregisterForGroup",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "groupIndex",
+          "type": "uint256"
+        },
+        {
+          "name": "userIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "userInGroup",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "groupIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "totalBalanceForGroup",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "insuranceGroupCount",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "groupIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "registerForGroup",
+      "outputs": [],
+      "payable": true,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "createInsuranceGroup",
+      "outputs": [],
+      "payable": true,
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "groupIndex",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "sender",
+          "type": "address"
+        }
+      ],
+      "name": "LogRegistration",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "groupIndex",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "user",
+          "type": "address"
+        }
+      ],
+      "name": "LogDeregistration",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "groupIndex",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "premium",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "user",
+          "type": "address"
+        }
+      ],
+      "name": "LogPaidPremium",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "groupIndex",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "receiver",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "LogWithdrawal",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "groupIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "LogCreation",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "groupIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "LogUpdate",
+      "type": "event"
+    }
+  ],
+  "unlinked_binary": "0x6060604052341561000f57600080fd5b5b610f0c8061001f6000396000f300606060405236156100ac5763ffffffff7c0100000000000000000000000000000000000000000000000000000000600035041663113d368581146100b1578063135b78ac146100d957806334c9f77f146100f15780634364b26e14610119578063441a3e7014610126578063801432f4146101415780639348935a14610159578063d16df66e1461018e578063dcdfef0f146101b6578063ebac4a33146101db578063fa66498d146101e8575b600080fd5b34156100bc57600080fd5b6100c76004356101f2565b60405190815260200160405180910390f35b34156100e457600080fd5b6100ef600435610220565b005b34156100fc57600080fd5b6100c76004356103d5565b60405190815260200160405180910390f35b6100ef600435610403565b005b341561013157600080fd5b6100ef60043560243561057a565b005b341561014c57600080fd5b6100ef6004356106ee565b005b341561016457600080fd5b610172600435602435610872565b604051600160a060020a03909116815260200160405180910390f35b341561019957600080fd5b6100c76004356108cc565b60405190815260200160405180910390f35b34156101c157600080fd5b6100c76108fa565b60405190815260200160405180910390f35b6100ef600435610901565b005b6100ef610a89565b005b6000808281548110151561020257fe5b906000526020600020906007020160005b506004015490505b919050565b60004260008381548110151561023257fe5b906000526020600020906007020160005b50600301555060005b600080548390811061025a57fe5b906000526020600020906007020160005b5060020154811015610317576000808381548110151561028757fe5b906000526020600020906007020160005b50600101600080858154811015156102ac57fe5b906000526020600020906007020160005b506002018054859081106102cd57fe5b906000526020600020900160005b90546101009190910a9004600160a060020a031681526020810191909152604001600020805460ff19169115159190911790555b60010161024c565b6402540be40060008381548110151561032c57fe5b906000526020600020906007020160005b506005015464178d3281940281151561035257fe5b0460008381548110151561036257fe5b906000526020600020906007020160005b50600401556000805481908490811061038857fe5b906000526020600020906007020160005b50600501557e294582e43c04b58506a2ce2394d3a8061a48b8cd3aa313f52fe9ba7163e4d88260405190815260200160405180910390a15b5050565b600080828154811015156103e557fe5b906000526020600020906007020160005b506002015490505b919050565b3460008281548110151561041357fe5b906000526020600020906007020160005b5060040154111561043457600080fd5b600080548290811061044257fe5b906000526020600020906007020160005b50600160a060020a0333166000908152600191909101602052604090205460ff161561047e57600080fd5b600160008281548110151561048f57fe5b906000526020600020906007020160005b5033600160a060020a0316600090815260019190910160205260408120805460ff1916921515929092179091558054349190839081106104dc57fe5b906000526020600020906007020160005b5060060180549091019055600080547f156e85ccdf0518e952b3f29f6840ca14253f69045932ae19bc52e3a8fb4b4e4c9183918290811061052a57fe5b906000526020600020906007020160005b5060040154336040519283526020830191909152600160a060020a03166040808301919091526060909101905180910390a161057681610b4f565b5b50565b600080548390811061058857fe5b906000526020600020906007020160005b50600160a060020a0333166000908152602091909152604090205460ff1615156105c257600080fd5b60008054839081106105d057fe5b906000526020600020906007020160005b50600160a060020a0333166000908152600191909101602052604090205460ff16151561060d57600080fd5b600080548390811061061b57fe5b906000526020600020906007020160005b5060060154811061063c57600080fd5b8060008381548110151561064c57fe5b906000526020600020906007020160005b506006018054919091039055600160a060020a03331681156108fc0282604051600060405180830381858888f19350505050151561069a57600080fd5b7ff14cd1bb289d45f28f1d192add66893331fa3b3fa7a2a9dd1cc7e076dd817e19823383604051928352600160a060020a0390911660208301526040808301919091526060909101905180910390a15b5050565b60008054829081106106fc57fe5b906000526020600020906007020160005b50600160a060020a0333166000908152602091909152604090205460ff16151561073657600080fd5b600080548290811061074457fe5b906000526020600020906007020160005b50600160a060020a033316600090815260209190915260408120805460ff1916905580548290811061078357fe5b906000526020600020906007020160005b50600160a060020a033316600090815260019190910160205260408120805460ff191690558054670de0b6b3a76400009190839081106107d057fe5b906000526020600020906007020160005b506006018054919091039055600160a060020a0333166000670de0b6b3a7640000604051600060405180830381858888f19350505050151561082257600080fd5b7f2571faf6ead9ffa8cf6376c8891812286f996885eb32b9532d303ffb7942a64d8133604051918252600160a060020a031660208201526040908101905180910390a161057681610b4f565b5b50565b6000808381548110151561088257fe5b906000526020600020906007020160005b506002018054839081106108a357fe5b906000526020600020900160005b9054906101000a9004600160a060020a031690505b92915050565b600080828154811015156108dc57fe5b906000526020600020906007020160005b506006015490505b919050565b6000545b90565b670de0b6b3a7640000341461091557600080fd5b600080548290811061092357fe5b906000526020600020906007020160005b506002018054600181016109488382610d03565b916000526020600020900160005b8154600160a060020a033381166101009390930a928302920219161790555060008054600191908390811061098757fe5b906000526020600020906007020160005b5033600160a060020a0316600090815260209190915260408120805460ff19169215159290921790915580548190839081106109d057fe5b906000526020600020906007020160005b5033600160a060020a0316600090815260019190910160205260408120805460ff191692151592909217909155805434919083908110610a1d57fe5b906000526020600020906007020160005b50600601805490910190557f129426455b59e13b45edae8ba4c238749562af7cf3d0b24f41d4e247d9dc403e8133604051918252600160a060020a031660208201526040908101905180910390a161057681610b4f565b5b50565b610a91610d2d565b671bc16d674ec80000341015610aa657600080fd5b4260208201526000805460018101610abe8382610d63565b916000526020600020906007020160005b508290815181600201908051610ae9929160200190610d95565b50602082015181600301556040820151816004015560608201518160050155608082015160069091015550506000547f068bf4da5cf922e0871c5423289db4af1c8b4450dc3777a7e6247b17d98113589060405190815260200160405180910390a15b50565b60008082815481101515610b5f57fe5b906000526020600020906007020160005b506003015462278cff194201106103d15742600083815481101515610b9157fe5b906000526020600020906007020160005b50600301555060005b6000805483908110610bb957fe5b906000526020600020906007020160005b5060020154811015610c765760008083815481101515610be657fe5b906000526020600020906007020160005b5060010160008085815481101515610c0b57fe5b906000526020600020906007020160005b50600201805485908110610c2c57fe5b906000526020600020900160005b90546101009190910a9004600160a060020a031681526020810191909152604001600020805460ff19169115159190911790555b600101610bab565b6402540be400600083815481101515610c8b57fe5b906000526020600020906007020160005b506005015464178d32819402811515610cb157fe5b04600083815481101515610cc157fe5b906000526020600020906007020160005b506004015560008054819084908110610ce757fe5b906000526020600020906007020160005b50600501555b5b5050565b815481835581811511610d2757600083815260209020610d27918101908301610e0a565b5b505050565b60a060405190810160405280610d41610e2b565b8152602001600081526020016000815260200160008152602001600081525090565b815481835581811511610d2757600702816007028360005260206000209182019101610d279190610e3d565b5b505050565b828054828255906000526020600020908101928215610df9579160200282015b82811115610df9578251825473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a039190911617825560209290920191600190910190610db5565b5b50610e06929150610e86565b5090565b6108fe91905b80821115610e065760008155600101610e10565b5090565b90565b60206040519081016040526000815290565b6108fe91905b80821115610e06576000610e5a6002830182610ebe565b5060006003820181905560048201819055600582018190556006820155600701610e43565b5090565b90565b6108fe91905b80821115610e0657805473ffffffffffffffffffffffffffffffffffffffff19168155600101610e8c565b5090565b90565b50805460008255906000526020600020908101906105769190610e0a565b5b505600a165627a7a723058205e85db5ac8392bd57301fc16d1656e2f9323c967d9b37b519a5875787eaccdb10029",
+  "networks": {
+    "1507992534395": {
+      "events": {
+        "0x1b851e1031ef35a238e6c67d0c7991162390df915f70eaf9098dbf0b175a6198": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogDeposit",
+          "type": "event"
+        },
+        "0xb4214c8c54fc7442f36d3682f59aebaf09358a4431835b30efb29d52cf9e1e91": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogWithdrawal",
+          "type": "event"
+        },
+        "0x9a3af238928497b2cd81a168b033c43c9cdd4f54a33cb709d0202387d925d16a": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogError",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x386911842ac45bda79017fbd8d75eb3dae8ce904",
+      "updated_at": 1507992539997
+    },
+    "1507994501673": {
+      "events": {
+        "0x1b851e1031ef35a238e6c67d0c7991162390df915f70eaf9098dbf0b175a6198": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogDeposit",
+          "type": "event"
+        },
+        "0xb4214c8c54fc7442f36d3682f59aebaf09358a4431835b30efb29d52cf9e1e91": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogWithdrawal",
+          "type": "event"
+        },
+        "0x9a3af238928497b2cd81a168b033c43c9cdd4f54a33cb709d0202387d925d16a": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogError",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x15b51f13881380dfd0ee19f2494b5d785493797b",
+      "updated_at": 1507994512186
+    },
+    "1507996035111": {
+      "events": {
+        "0x1b851e1031ef35a238e6c67d0c7991162390df915f70eaf9098dbf0b175a6198": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogDeposit",
+          "type": "event"
+        },
+        "0xb4214c8c54fc7442f36d3682f59aebaf09358a4431835b30efb29d52cf9e1e91": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogWithdrawal",
+          "type": "event"
+        },
+        "0x9a3af238928497b2cd81a168b033c43c9cdd4f54a33cb709d0202387d925d16a": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogError",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x3178ede3acab48e89f852ebba8ec89e95e236ff7",
+      "updated_at": 1507996051793
+    },
+    "1507997833021": {
+      "events": {
+        "0x1b851e1031ef35a238e6c67d0c7991162390df915f70eaf9098dbf0b175a6198": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogDeposit",
+          "type": "event"
+        },
+        "0xb4214c8c54fc7442f36d3682f59aebaf09358a4431835b30efb29d52cf9e1e91": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogWithdrawal",
+          "type": "event"
+        },
+        "0x9a3af238928497b2cd81a168b033c43c9cdd4f54a33cb709d0202387d925d16a": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogError",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xd0be1b0fac7cca67bb7b1115c72f996fe68ecc35",
+      "updated_at": 1507997851185
+    },
+    "1507998140696": {
+      "events": {
+        "0x1b851e1031ef35a238e6c67d0c7991162390df915f70eaf9098dbf0b175a6198": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogDeposit",
+          "type": "event"
+        },
+        "0xb4214c8c54fc7442f36d3682f59aebaf09358a4431835b30efb29d52cf9e1e91": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogWithdrawal",
+          "type": "event"
+        },
+        "0x9a3af238928497b2cd81a168b033c43c9cdd4f54a33cb709d0202387d925d16a": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogError",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x5d3d4f2834a2a08a173626ed27ad302b18410136",
+      "updated_at": 1507998146468
+    },
+    "1507998839774": {
+      "events": {
+        "0x1b851e1031ef35a238e6c67d0c7991162390df915f70eaf9098dbf0b175a6198": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogDeposit",
+          "type": "event"
+        },
+        "0xb4214c8c54fc7442f36d3682f59aebaf09358a4431835b30efb29d52cf9e1e91": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogWithdrawal",
+          "type": "event"
+        },
+        "0x9a3af238928497b2cd81a168b033c43c9cdd4f54a33cb709d0202387d925d16a": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogError",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xf0860f21e9ba4d6782dea381a11afc2e629a9ca8",
+      "updated_at": 1507998845869
+    },
+    "1507999199639": {
+      "events": {
+        "0x1b851e1031ef35a238e6c67d0c7991162390df915f70eaf9098dbf0b175a6198": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogDeposit",
+          "type": "event"
+        },
+        "0xb4214c8c54fc7442f36d3682f59aebaf09358a4431835b30efb29d52cf9e1e91": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogWithdrawal",
+          "type": "event"
+        },
+        "0x9a3af238928497b2cd81a168b033c43c9cdd4f54a33cb709d0202387d925d16a": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogError",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x0fd2ff727dfdbe878a8740e2b48330b626af0ec2",
+      "updated_at": 1507999206773
+    },
+    "1508000891227": {
+      "events": {
+        "0x1b851e1031ef35a238e6c67d0c7991162390df915f70eaf9098dbf0b175a6198": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogDeposit",
+          "type": "event"
+        },
+        "0xb4214c8c54fc7442f36d3682f59aebaf09358a4431835b30efb29d52cf9e1e91": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogWithdrawal",
+          "type": "event"
+        },
+        "0x9a3af238928497b2cd81a168b033c43c9cdd4f54a33cb709d0202387d925d16a": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogError",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x523166a99fcea63279f91f003529c1b3480e485b",
+      "updated_at": 1508000897930
+    },
+    "1508013017007": {
+      "events": {
+        "0x129426455b59e13b45edae8ba4c238749562af7cf3d0b24f41d4e247d9dc403e": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "groupIndex",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "sender",
+              "type": "address"
+            }
+          ],
+          "name": "LogRegistration",
+          "type": "event"
+        },
+        "0x2571faf6ead9ffa8cf6376c8891812286f996885eb32b9532d303ffb7942a64d": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "groupIndex",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "user",
+              "type": "address"
+            }
+          ],
+          "name": "LogDeregistration",
+          "type": "event"
+        },
+        "0x156e85ccdf0518e952b3f29f6840ca14253f69045932ae19bc52e3a8fb4b4e4c": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "groupIndex",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "premium",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "user",
+              "type": "address"
+            }
+          ],
+          "name": "LogPaidPremium",
+          "type": "event"
+        },
+        "0xf14cd1bb289d45f28f1d192add66893331fa3b3fa7a2a9dd1cc7e076dd817e19": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "groupIndex",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogWithdrawal",
+          "type": "event"
+        },
+        "0x068bf4da5cf922e0871c5423289db4af1c8b4450dc3777a7e6247b17d9811358": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "groupIndex",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogCreation",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x298ed96c9b3d64213b26924b340dc43bac783753",
+      "updated_at": 1508013024622
+    },
+    "1508016096186": {
+      "events": {
+        "0x129426455b59e13b45edae8ba4c238749562af7cf3d0b24f41d4e247d9dc403e": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "groupIndex",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "sender",
+              "type": "address"
+            }
+          ],
+          "name": "LogRegistration",
+          "type": "event"
+        },
+        "0x2571faf6ead9ffa8cf6376c8891812286f996885eb32b9532d303ffb7942a64d": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "groupIndex",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "user",
+              "type": "address"
+            }
+          ],
+          "name": "LogDeregistration",
+          "type": "event"
+        },
+        "0x156e85ccdf0518e952b3f29f6840ca14253f69045932ae19bc52e3a8fb4b4e4c": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "groupIndex",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "premium",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "user",
+              "type": "address"
+            }
+          ],
+          "name": "LogPaidPremium",
+          "type": "event"
+        },
+        "0xf14cd1bb289d45f28f1d192add66893331fa3b3fa7a2a9dd1cc7e076dd817e19": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "groupIndex",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogWithdrawal",
+          "type": "event"
+        },
+        "0x068bf4da5cf922e0871c5423289db4af1c8b4450dc3777a7e6247b17d9811358": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "groupIndex",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogCreation",
+          "type": "event"
+        },
+        "0x00294582e43c04b58506a2ce2394d3a8061a48b8cd3aa313f52fe9ba7163e4d8": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "groupIndex",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogUpdate",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x692d05f523f93c4748c447318666ebce1f8a6178",
+      "updated_at": 1508016102228
+    },
+    "1508026316685": {
+      "events": {
+        "0x129426455b59e13b45edae8ba4c238749562af7cf3d0b24f41d4e247d9dc403e": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "groupIndex",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "sender",
+              "type": "address"
+            }
+          ],
+          "name": "LogRegistration",
+          "type": "event"
+        },
+        "0x2571faf6ead9ffa8cf6376c8891812286f996885eb32b9532d303ffb7942a64d": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "groupIndex",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "user",
+              "type": "address"
+            }
+          ],
+          "name": "LogDeregistration",
+          "type": "event"
+        },
+        "0x156e85ccdf0518e952b3f29f6840ca14253f69045932ae19bc52e3a8fb4b4e4c": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "groupIndex",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "premium",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "user",
+              "type": "address"
+            }
+          ],
+          "name": "LogPaidPremium",
+          "type": "event"
+        },
+        "0xf14cd1bb289d45f28f1d192add66893331fa3b3fa7a2a9dd1cc7e076dd817e19": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "groupIndex",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogWithdrawal",
+          "type": "event"
+        },
+        "0x068bf4da5cf922e0871c5423289db4af1c8b4450dc3777a7e6247b17d9811358": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "groupIndex",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogCreation",
+          "type": "event"
+        },
+        "0x00294582e43c04b58506a2ce2394d3a8061a48b8cd3aa313f52fe9ba7163e4d8": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "groupIndex",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogUpdate",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x6786f5e4401c29035414dc650d811e03177f7240",
+      "updated_at": 1508026322921
+    }
+  },
+  "schema_version": "0.0.5",
+  "updated_at": 1508026322921
+}
