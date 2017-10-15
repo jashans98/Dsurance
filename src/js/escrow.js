@@ -29,7 +29,7 @@ EscrowApp = {
 
       EscrowApp.contracts.Escrow.deployed().then(function(instance) {
         EscrowApp.escrowInstance = instance;
-        cb();
+        if (cb) cb();
       });
     });
 
@@ -77,7 +77,7 @@ EscrowApp = {
   },
 
   deregisterFromGroup: function(groupIndex) {
-    EscrowApp.escrowInstance.deregisterForGroup.call(groupIndex, 
+    EscrowApp.escrowInstance.deregisterForGroup(groupIndex, 
       {from: EscrowApp.account}).then(function(result) {
         for (var i = 0; i < result.logs.length; ++i) {
           console.log(result.logs[i]);
@@ -85,10 +85,33 @@ EscrowApp = {
     });
   },
 
-
   // pass a function that accepts the amount, and then does something with it
   getMonthlyPaymentAmountForGroup: function(groupIndex, callback) {
-    EscrowApp.escrowInstance.getMonthlyPremiumAmount.call(groupIndex).then(a => callback(a.toNumber()));
+    EscrowApp.escrowInstance.getMonthlyPremiumAmount.call(groupIndex).then(function(a) {
+      callback(a.toNumber());
+    });
+  },
+
+  payMonthlyPremiumForGroup: function(groupIndex) {
+    EscrowApp.escrowInstance.getMonthlyPremiumAmount.call(groupIndex).then(function(a) {
+      EscrowApp.escrowInstance.payPremium(0, {from: EscrowApp.account, value: web3.toWei(a, 'wei')}).then(function(result) {
+        for (var i = 0; i < result.logs.length; ++i) {
+          console.log(result.logs[i]);
+        }
+      })
+    })
+  },
+
+  getContractBalance: function(cb) {
+    EscrowApp.escrowInstance.getContractBalance.call().then(function(balance) {
+      cb(balance.toNumber());
+    });
+  },
+
+  getGroupBalance: function(groupIndex, cb) {
+    EscrowApp.escrowInstance.totalBalanceForGroup.call(groupIndex).then(function(balance) {
+      cb(balance.toNumber());
+    });
   },
 
   withdrawAmountFromInsuranceGroup: function(groupIndex, amount) {
@@ -103,6 +126,12 @@ EscrowApp = {
     EscrowApp.escrowInstance.numUsersInGroup.call(groupIndex).then(bigNum => callback(bigNum.toNumber()));
   },
 
+  numPayingUsersInGroup: function(groupIndex, callback) {
+    EscrowApp.escrowInstance.numPayingUsersInGroup.call(groupIndex).then(function(count) {
+      callback(count.toNumber());
+    });
+  },
+
 
   userAddressInGroup: function(groupIndex, userIndex, callback) {
     EscrowApp.escrowInstance.userInGroup.call(groupIndex, userIndex).then(callback);
@@ -112,51 +141,7 @@ EscrowApp = {
     EscrowApp.escrowInstance.totalBalanceForGroup.call(groupIndex).then(bigNum => callback(bigNum.toNumber()));
   },
 
-  numClaimsForGroup: function(groupIndex, callback) {
-    EscrowApp.escrowInstance.numClaimsForGroup.call(groupIndex).then(bigNum => callback(bigNum.toNumber()));
-  },
 
-  submitClaimToGroup: function(groupIndex, textHash, pictureHash, callback) {
-    EscrowApp.escrowInstance.submitClaimToGroup(groupIndex, textHash, pictureHash, {from: EscrowApp.account});
-  },
-
-  // callback 
-  fetchClaimForGroup: function(groupIndex, claimIndex, callback) {
-    EscrowApp.escrowInstance.fetchClaimForGroup.call(groupIndex, claimIndex).then(function(claimArr) {
-      callback({
-        claimOrigin: claimArr[0],
-        textHash: claimArr[1],
-        pictureHash: claimArr[2]
-      });
-    });
-  },
-
-
-  getAllInsuranceGroups: function(callback) {
-    EscrowApp.countGroups(function (numGroups) {
-      var insuranceGroups = [];
-      for (var groupCounter = 0; groupCounter < numGroups; ++groupCounter) {
-        var groupObject = {};
-        groupObject.id = groupCounter;
-
-        EscrowApp.poolValueForGroup(groupCounter, function(value) { 
-          groupObject.poolValue = value; 
-        });
-
-        EscrowApp.numUsersInGroup(groupCounter, function(numUsers) {
-          groupObject.users = [];
-          for (var userCounter = 0; userCounter < numUsers; ++numUsers) {
-            EscrowApp.userAddressInGroup(groupCounter, userCounter, function(address) {
-              groupObject.users.push(address);
-              console.log(groupObject);
-            });
-          }
-        });
-      }
-
-      callback(insuranceGroups);
-    });
-  }
 
 
 }

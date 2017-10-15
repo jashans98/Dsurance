@@ -6,20 +6,24 @@ contract Escrow {
     address sender;
     string textHash;
     string pictureHash;
+    uint approved;
   }
 
   struct InsuranceGroup {
     mapping (address => bool) registeredUsers;
     mapping (address => bool) paidUsers;
-    address[] users;
-    uint lastUpdatedTime;
+    address[] users;    uint lastUpdatedTime;
     uint requiredMonthlyPayment;
     uint totalAmountWithdrawn;
     uint groupBalance;
-    Claim[] claims;
   }
 
+
+
+
   InsuranceGroup[] groups;
+  address[] investors;
+  Claim[] claims;
 
   // fire events for front-end whenever something is done
   event LogRegistration(uint groupIndex, address sender);
@@ -28,6 +32,7 @@ contract Escrow {
   event LogWithdrawal(uint groupIndex, address receiver, uint amount);
   event LogCreation(uint groupIndex);
   event LogUpdate(uint groupIndex);
+  event LogAcceptClaim(address investor, uint claimIndex);
 
 
   function registerForGroup(uint groupIndex) payable {
@@ -61,8 +66,6 @@ contract Escrow {
     msg.sender.transfer(1 ether);
 
     LogDeregistration(groupIndex, msg.sender);
-
-    updateMonthly(groupIndex);
   }
 
 
@@ -83,18 +86,27 @@ contract Escrow {
     updateMonthly(groupIndex);
   }
 
+  function getGroupBalance(uint groupIndex) constant returns (uint) {
+    return groups[groupIndex].groupBalance;
+  }
+
+  function getContractBalance() constant returns (uint) {
+    return this.balance;
+  }
+
   function getMonthlyPremiumAmount(uint groupIndex) constant returns (uint) {
     return groups[groupIndex].requiredMonthlyPayment;
   }
 
   function withdraw(uint groupIndex, uint amount) {
-    // verify the user
+    verify the user
     require(groups[groupIndex].registeredUsers[msg.sender]);
     require(groups[groupIndex].paidUsers[msg.sender]);
     require(amount < groups[groupIndex].groupBalance);
+    msg.sender.transfer(amount);
 
     groups[groupIndex].groupBalance -= amount;
-    msg.sender.transfer(amount);
+
 
     LogWithdrawal(groupIndex, msg.sender, amount);
   }
@@ -143,6 +155,7 @@ contract Escrow {
     require(msg.value >= 2 ether);
     InsuranceGroup memory group;
     group.lastUpdatedTime = now;
+    group.groupBalance = 2 ether;
     
     groups.push(group);
 
@@ -157,22 +170,59 @@ contract Escrow {
     return groups[groupIndex].users[userIndex];
   }
 
-  function submitClaimToGroup(uint groupIndex, string _textHash, string _pictureHash) {
+
+
+  // MARK: CLAIMS
+
+  function submitClaim(string _textHash, string _pictureHash) {
+
     Claim memory c;
     c.sender = msg.sender;
     c.textHash = _textHash;
     c.pictureHash = _pictureHash;
+    c.approved = 0;
 
-    groups[groupIndex].claims.push(c);
+    claims.push(c);
   }
 
-  function numClaimsForGroup(uint groupIndex) constant returns (uint) {
-    return groups[groupIndex].claims.length;
+  function numClaims() constant returns (uint) {
+    return claims.length;
   }
 
-  function fetchClaimForGroup(uint _groupIndex, uint _claimNumber) constant returns (address, string, string) {
-    Claim memory c = groups[_groupIndex].claims[_claimNumber];
-    return (c.sender, c.textHash, c.pictureHash);
+  function fetchClaim(uint _claimId) constant returns (address, string, string, uint) {
+    Claim memory c = claims[_claimId];
+
+    return (c.sender, c.textHash, c.pictureHash, c.approved);
+  }
+
+  function acceptClaim(uint claimIndex) {
+    bool fromSender = false;
+    for (uint i = 0; i < investors.length; ++i) {
+      if (investors[i] == msg.sender) {
+        fromSender = true;
+      }
+    }
+
+    require(fromSender);
+
+    claims[claimIndex].approved += 1;
+
+    LogAcceptClaim(msg.sender, claimIndex);
+  }
+
+
+
+
+  // DEBUG functions
+  function numPayingUsersInGroup(uint groupIndex) constant returns (uint) {
+    uint result = 0;
+    for (uint i = 0; i < groups[groupIndex].users.length; i++) {
+      if (groups[groupIndex].paidUsers[groups[groupIndex].users[i]]) {
+        result += 1;
+      }
+    }
+
+    return result;
   }
 
 
