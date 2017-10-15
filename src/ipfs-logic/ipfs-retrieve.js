@@ -25,3 +25,7 @@ var retrieveFileToIPFS = (hash, callback) => {
 		});
 })}
 
+module.exports =	{
+	getFileFromIPFS,
+	retrieveFileToIPFS,
+}
