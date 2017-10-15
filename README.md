@@ -10,7 +10,7 @@ Current features:
 
 Lots can be done to keep building on Dsurance. Most notably:
 
-* Enhanced consensus algorithm between investors to establish validity of policyholder *laims.
+* Enhanced consensus algorithm between investors to establish validity of policyholder claims.
 * Risk Segmentation algorithm allowing for policyholders to be charged as a function of their risk characteristics.
 * Architecture to automatically create a smart contract for each new insurance network.
 * Investment platform for the Pool Value to appreciate.
