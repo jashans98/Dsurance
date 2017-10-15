@@ -142,6 +142,72 @@ EscrowApp = {
   },
 
 
+  // Add claim functionality
+  submitClaim: function(groupIndex, requestedAmount, textHash, fileHash) {
+    EscrowApp.escrowInstance.submitClaim(groupIndex, requestedAmount, textHash, fileHash, {from: EscrowApp.account}).then(function(result) {
+      for (var i = 0; i < result.logs.length; i++)
+        console.log(result.logs[i]);
+    });
+  },
+
+  numClaimsInGroup: function(groupIndex, callback) {
+    EscrowApp.escrowInstance.numClaimsInGroup.call(groupIndex).then(function(numClaims) {
+      callback(numClaims.toNumber());
+    });
+  },
+
+  fetchClaimFromGroupByIndex: function(groupIndex, claimIndex, callback) {
+    EscrowApp.escrowInstance.fetchClaimFromGroupByIndex.call(groupIndex, claimIndex).then(function(claimArray) {
+      var claimObj = {
+        sender: claimArray[0],
+        amount: claimArray[1].toNumber(),
+        textHash: claimArray[2],
+        fileHash: claimArray[3]
+      }
+      callback(claimObj);
+    });
+  },
+
+  // Add investor functionality
+  // All of the functions below this are only for use in the investor portal
+  registerAsInvestor: function(investment) {
+    EscrowApp.escrowInstance.registerAsInvestor({from: EscrowApp.account, value: web3.toWei(investment, 'ether')}).then(function(result) {
+      for (var i = 0; i < result.logs.length; i++)
+        console.log(result.logs[i]);
+    });
+  },
+
+
+  addBalanceAsInvestor: function(amount) {
+    EscrowApp.escrowInstance.addBalanceAsInvestor({from: EscrowApp.account, value: web3.toWei(amount, 'ether')}).then(function(result) {
+      for (var i = 0; i < result.logs.length; i++)
+        console.log(result.logs[i]);
+    });
+  },
+
+  getInvestorBalance: function(callback) {
+    EscrowApp.escrowInstance.getInvestorBalance.call().then(function(balance) {
+      callback(balance.toNumber());
+    });
+  },
+
+  withdrawAsInvestor: function(amount) {
+    // note that amount here is specified in Wei, multiply by 1e18 etc.
+    EscrowApp.escrowInstance.withdrawAsInvestor(amount, {from: EscrowApp.account}).then(function(result) {
+      for (var i = 0; i < result.logs.length; i++)
+        console.log(result.logs[i]);
+    });
+  },
+
+  approveClaimForGroupByIndex: function(groupIndex, claimIndex) {
+    // only investors call this. Requires 100 ether for successful use
+    EscrowApp.escrowInstance.approveClaim(groupIndex, claimIndex, {from: EscrowApp.account}).then(function(result) {
+      for (var i = 0; i < result.logs.length; i++)
+        console.log(result.logs[i]);
+    })
+  }
+
+
 
 
 }
