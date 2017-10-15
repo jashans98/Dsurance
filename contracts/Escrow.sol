@@ -2,6 +2,11 @@ pragma solidity ^0.4.4;
 
 contract Escrow {
 
+  struct Claim {
+    address sender;
+    string ipfsHash;
+  }
+
   struct InsuranceGroup {
     mapping (address => bool) registeredUsers;
     mapping (address => bool) paidUsers;
@@ -10,6 +15,7 @@ contract Escrow {
     uint requiredMonthlyPayment;
     uint totalAmountWithdrawn;
     uint groupBalance;
+    Claim[] claims;
   }
 
   InsuranceGroup[] groups;
@@ -148,6 +154,18 @@ contract Escrow {
 
   function userInGroup(uint groupIndex, uint userIndex) constant returns (address) {
     return groups[groupIndex].users[userIndex];
+  }
+
+  function submitClaimToGroup(uint groupIndex, string _ipfsHash) {
+    Claim memory c;
+    c.sender = msg.sender;
+    c.ipfsHash = _ipfsHash;
+
+    groups[groupIndex].claims.push(claim);
+  }
+
+  function numClaimsForGroup(uint groupIndex) constant returns (uint) {
+    return groups[groupIndex].claims.length;
   }
 
 

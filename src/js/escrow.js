@@ -4,7 +4,7 @@ EscrowApp = {
   escrowInstance: null, // make all smart contract calls/transactions via this object
 
   // set up web3 to interact with ethereum network
-  init: function() {
+  init: function(cb) {
     console.log('initializing web3');
     if (typeof web3 !== 'undefined') {
       EscrowApp.web3Provider = web3.currentProvider;
@@ -14,11 +14,11 @@ EscrowApp = {
       web3 = new Web3(EscrowApp.web3Provider);
     }
 
-    return EscrowApp.initContract();
+    return EscrowApp.initContract(cb);
   },
 
   // init contract
-  initContract: function() {
+  initContract: function(cb) {
     $.getJSON('Escrow.json', function(data) {
       console.log('fetched artifact ' + data);
       var EscrowArtifact = data;
@@ -29,7 +29,7 @@ EscrowApp = {
 
       EscrowApp.contracts.Escrow.deployed().then(function(instance) {
         EscrowApp.escrowInstance = instance;
-
+        cb();
       });
     });
 
@@ -110,6 +110,14 @@ EscrowApp = {
 
   poolValueForGroup: function(groupIndex, callBackFn) {
     EscrowApp.escrowInstance.totalBalanceForGroup.call(groupIndex).then(bigNum => callBackFn(bigNum.toNumber()));
+  },
+
+  numClaimsForGroup: function(groupIndex, callBackFn) {
+    EscrowApp.escrowInstance.numClaimsForGroup.call(groupIndex).then(bigNum => callBackFn(bigNum.toNumber()));
+  },
+
+  submitClaimToGroup: function(groupIndex, ipfsHash, callBackFn) {
+    EscrowApp.escrowInstance.submitClaimToGroup(groupIndex, ipfsHash, {from: EscrowApp.account});
   },
 
 
