@@ -30,7 +30,4 @@ function sendFileToIPFS(data){
 //EXAMPLE:
 //sendFileToIPFS(new Buffer("helloWorld")); //Returns a hash
 
-module.exports =	{
-	addFileToIPFS,
-	sendFileToIPFS,
-}
+module.exports = function(data) { return sendFileToIPFS(data) }
