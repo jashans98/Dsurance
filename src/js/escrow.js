@@ -32,38 +32,112 @@ EscrowApp = {
 
       });
     });
-  },
 
-  fetchBalance: function() {
     web3.eth.getAccounts(function(err, accounts) {
       if (err) {
-        console.log('error fetching accounts: ' + err);
+        console.log('error fetching accounts: ', err);
         return;
       }
 
-      var account = accounts[0];
-
-      EscrowApp.escrowInstance.checkBalance.call(account).then(function(result) {
-        console.log(result.toNumber());
-      });
+      EscrowApp.account = accounts[0];
     })
   },
 
-  putBalance: function(amount) {
-    web3.eth.getAccounts(function(err, accounts) {
-      if (err) {
-        console.log('error fetching accounts: ' + err);
-        return;
+  // create group
+  createGroup: function() {
+    EscrowApp.escrowInstance.createInsuranceGroup({from: EscrowApp.account, value: web3.toWei(2, 'ether')}).then(function(result) {
+      for (var i = 0; i < result.logs.length; ++i) {
+        console.log(result.logs[i]);
       }
+    });
+  },
 
-      var account = accounts[0];
+  countGroups: function(callBackFn) {
+    EscrowApp.escrowInstance.insuranceGroupCount.call().then(g => callBackFn(g.toNumber()));
+  },
 
-      EscrowApp.escrowInstance.deposit({from: account, value: web3.toWei(amount, 'ether')}).then(function (result) {
+  // force monthly updates so payments need to take place again
+  forceUpdate: function() {
+    
+    EscrowApp.escrowInstance.forceUpdate({from: EscrowApp.account}).then(function(result) {
+      for (var i = 0; i < result.logs.length; ++i) {
+        console.log(result.logs[i]);
+      }
+    });
+  },
+
+  // register a user for an insurance group
+  registerForInsuranceGroup: function(groupIndex) {
+    EscrowApp.escrowInstance.registerForGroup(groupIndex, 
+      {from: EscrowApp.account, value: web3.toWei(1, 'ether')}).then(function(result) {
+      for (var i = 0; i < result.logs.length; ++i) {
+        console.log(result.logs[i]);
+      }
+    });
+  },
+
+  deregisterFromGroup: function(groupIndex) {
+    EscrowApp.escrowInstance.deregisterForGroup.call(groupIndex, 
+      {from: EscrowApp.account}).then(function(result) {
         for (var i = 0; i < result.logs.length; ++i) {
-          var log = result.logs[i];
-          console.log('Logged event: ', log);
+          console.log(result.logs[i]);
         }
-    })
-    })
+    });
+  },
+
+
+  // pass a function that accepts the amount, and then does something with it
+  getMonthlyPaymentAmountForGroup: function(groupIndex, callBackFn) {
+    EscrowApp.escrowInstance.getMonthlyPremiumAmount.call(groupIndex).then(a => callBackFn(a.toNumber()));
+  },
+
+  withdrawAmountFromInsuranceGroup: function(groupIndex, amount) {
+    EscrowApp.escrowInstance.withdraw(groupIndex, amount, {from: EscrowApp.account}).then(function(result) {
+      for (var i = 0; i < result.logs.length; ++i) {
+        console.log(result.logs[i]);
+      }
+    });
+  },
+
+  numUsersInGroup: function(groupIndex, callBackFn) {
+    EscrowApp.escrowInstance.numUsersInGroup.call(groupIndex).then(bigNum => callBackFn(bigNum.toNumber()));
+  },
+
+
+  userAddressInGroup: function(groupIndex, userIndex, callBackFn) {
+    EscrowApp.escrowInstance.userInGroup.call(groupIndex, userIndex).then(callBackFn);
+  },
+
+  poolValueForGroup: function(groupIndex, callBackFn) {
+    EscrowApp.escrowInstance.totalBalanceForGroup.call(groupIndex).then(bigNum => callBackFn(bigNum.toNumber()));
+  },
+
+
+  getAllInsuranceGroups: function(callBackFn) {
+    EscrowApp.countGroups(function (numGroups) {
+      var insuranceGroups = [];
+      for (var groupCounter = 0; groupCounter < numGroups; ++groupCounter) {
+        var groupObject = {};
+        groupObject.id = groupCounter;
+
+        EscrowApp.poolValueForGroup(groupCounter, function(value) { 
+          groupObject.poolValue = value; 
+        });
+
+        EscrowApp.numUsersInGroup(groupCounter, function(numUsers) {
+          groupObject.users = [];
+          for (var userCounter = 0; userCounter < numUsers; ++numUsers) {
+            EscrowApp.userAddressInGroup(groupCounter, userCounter, function(address) {
+              groupObject.users.push(address);
+              console.log(groupObject);
+            });
+          }
+        });
+      }
+
+      callBackFn(insuranceGroups);
+    });
   }
+
+
 }

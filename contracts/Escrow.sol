@@ -18,7 +18,9 @@ contract Escrow {
   event LogRegistration(uint groupIndex, address sender);
   event LogDeregistration(uint groupIndex, address user);
   event LogPaidPremium(uint groupIndex, uint premium, address user);
-  event LogWithdrawal(uint groupIndex, address, uint amount);
+  event LogWithdrawal(uint groupIndex, address receiver, uint amount);
+  event LogCreation(uint groupIndex);
+  event LogUpdate(uint groupIndex);
 
 
   function registerForGroup(uint groupIndex) payable {
@@ -74,6 +76,10 @@ contract Escrow {
     updateMonthly(groupIndex);
   }
 
+  function getMonthlyPremiumAmount(uint groupIndex) constant returns (uint) {
+    return groups[groupIndex].requiredMonthlyPayment;
+  }
+
   function withdraw(uint groupIndex, uint amount) {
     // verify the user
     require(groups[groupIndex].registeredUsers[msg.sender]);
@@ -82,6 +88,8 @@ contract Escrow {
 
     groups[groupIndex].groupBalance -= amount;
     msg.sender.transfer(amount);
+
+    LogWithdrawal(groupIndex, msg.sender, amount);
   }
 
 
@@ -99,6 +107,10 @@ contract Escrow {
     }
   }
 
+  function totalBalanceForGroup(uint groupIndex) constant returns (uint) {
+    return groups[groupIndex].groupBalance;
+  }
+
 
   // for testing only
   function forceUpdate(uint groupIndex) {
@@ -111,6 +123,31 @@ contract Escrow {
 
     groups[groupIndex].requiredMonthlyPayment = (groups[groupIndex].totalAmountWithdrawn * 101153145236) / 10000000000;
     groups[groupIndex].totalAmountWithdrawn = 0; // reset amount withdrawn for the month
+
+    LogUpdate(groupIndex);
+  }
+
+  function insuranceGroupCount() constant returns (uint) {
+    return groups.length;
+  }
+
+
+  function createInsuranceGroup() payable {
+    require(msg.value >= 2 ether);
+    InsuranceGroup memory group;
+    group.lastUpdatedTime = now;
+    
+    groups.push(group);
+
+    LogCreation(groups.length);
+  }
+
+  function numUsersInGroup(uint groupIndex) constant returns (uint) {
+    return groups[groupIndex].users.length;
+  }
+
+  function userInGroup(uint groupIndex, uint userIndex) constant returns (address) {
+    return groups[groupIndex].users[userIndex];
   }
 
 
